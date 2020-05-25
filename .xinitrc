@@ -3,7 +3,7 @@
 
 # Statusbar loop
 while true; do
-   xsetroot -name "$(date +"%F %R" )"
+   xsetroot -name "$(date +"%b, %d %R" )"
    sleep 1m    # Update time every minute
 done &
 
