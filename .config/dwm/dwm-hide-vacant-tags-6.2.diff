@@ -53,4 +53,3 @@ index 4465af1..c4aa3de 100644
  		x += w;
  	}
  	w = blw = TEXTW(m->ltsymbol);
-

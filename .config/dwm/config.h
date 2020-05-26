@@ -21,6 +21,11 @@ static const char *colors[][3]      = {
 	/*               fg         bg         border   */
 	[SchemeNorm] = { col_gray3, col_gray1, col_gray2 },
 	[SchemeSel]  = { col_gray4, col_cyan,  col_cyan  },
+	[SchemeStatus]  = { col_gray3, col_gray1,  "#000000"  }, // Statusbar right {text,background,not used but cannot be empty}
+	[SchemeTagsSel]  = { col_gray4, col_cyan,  "#000000"  }, // Tagbar left selected {text,background,not used but cannot be empty}
+    [SchemeTagsNorm]  = { col_gray3, col_gray1,  "#000000"  }, // Tagbar left unselected {text,background,not used but cannot be empty}
+    [SchemeInfoSel]  = { col_gray4, col_cyan,  "#000000"  }, // infobar middle  selected {text,background,not used but cannot be empty}
+    [SchemeInfoNorm]  = { col_gray3, col_gray1,  "#000000"  }, // infobar middle  unselected {text,background,not used but cannot be empty}
 };
 
 /* tagging */
@@ -33,6 +38,7 @@ static const Rule rules[] = {
 	 */
 	/* class      instance    title       tags mask     isfloating   monitor */
 	{ "Gimp",     NULL,       NULL,       0,            1,           -1 },
+	{ "Firefox",  NULL,       NULL,       1 << 8,       0,           -1 },
 };
 
 /* layout(s) */
@@ -63,28 +69,53 @@ static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() 
 static const char *dmenucmd[] = { "dmenu_run", "-m", dmenumon, "-fn", dmenufont, "-nb", col_gray1, "-nf", col_gray3, "-sb", col_cyan, "-sf", col_gray4, NULL };
 static const char *termcmd[]  = { "st", NULL };
 
-
-#include <X11/XF86keysym.h>
 static Key keys[] = {
 	/* modifier                     key        function        argument */
+	{ MODKEY,                       XK_p,      spawn,          {.v = dmenucmd } },
 
-	{ MODKEY,                       XK_Return, spawn,          {.v = termcmd } },
-	{ MODKEY|ShiftMask,             XK_Return, zoom,           {0} },
+	{ MODKEY|ShiftMask,             XK_Return, spawn,          {.v = termcmd } },
 
 	{ MODKEY,                       XK_b,      togglebar,      {0} },
 
 	{ MODKEY,                       XK_j,      focusstack,     {.i = +1 } },
 	{ MODKEY,                       XK_k,      focusstack,     {.i = -1 } },
 
-	{ MODKEY,                       XK_o,      incnmaster,     {.i = +1 } },
-	{ MODKEY|ShiftMask,             XK_o,      incnmaster,     {.i = -1 } },
+	{ MODKEY,                       XK_i,      incnmaster,     {.i = +1 } },
+	{ MODKEY,                       XK_d,      incnmaster,     {.i = -1 } },
 
 	{ MODKEY,                       XK_h,      setmfact,       {.f = -0.05} },
 	{ MODKEY,                       XK_l,      setmfact,       {.f = +0.05} },
 
+	{ MODKEY|Mod1Mask,              XK_h,      incrgaps,       {.i = +1 } },
+	{ MODKEY|Mod1Mask,              XK_l,      incrgaps,       {.i = -1 } },
+
+	{ MODKEY|Mod1Mask|ShiftMask,    XK_h,      incrogaps,      {.i = +1 } },
+	{ MODKEY|Mod1Mask|ShiftMask,    XK_l,      incrogaps,      {.i = -1 } },
+
+	{ MODKEY|Mod1Mask|ControlMask,  XK_h,      incrigaps,      {.i = +1 } },
+	{ MODKEY|Mod1Mask|ControlMask,  XK_l,      incrigaps,      {.i = -1 } },
+
+	{ MODKEY|Mod1Mask,              XK_0,      togglegaps,     {0} },
+
+	{ MODKEY|Mod1Mask|ShiftMask,    XK_0,      defaultgaps,    {0} },
+
+	{ MODKEY,                       XK_y,      incrihgaps,     {.i = +1 } },
+	{ MODKEY,                       XK_o,      incrihgaps,     {.i = -1 } },
+
+	{ MODKEY|ControlMask,           XK_y,      incrivgaps,     {.i = +1 } },
+	{ MODKEY|ControlMask,           XK_o,      incrivgaps,     {.i = -1 } },
+
+	{ MODKEY|Mod1Mask,              XK_y,      incrohgaps,     {.i = +1 } },
+	{ MODKEY|Mod1Mask,              XK_o,      incrohgaps,     {.i = -1 } },
+
+	{ MODKEY|ShiftMask,             XK_y,      incrovgaps,     {.i = +1 } },
+	{ MODKEY|ShiftMask,             XK_o,      incrovgaps,     {.i = -1 } },
+
+	{ MODKEY,                       XK_Return, zoom,           {0} },
+
 	{ MODKEY,                       XK_Tab,    view,           {0} },
-	{ MODKEY|ShiftMask,             XK_q,      killclient,     {0} },
-	{ MODKEY|ControlMask|ShiftMask, XK_q,      quit,           {0} },
+
+	{ MODKEY|ShiftMask,             XK_c,      killclient,     {0} },
 
 	{ MODKEY,                       XK_t,      setlayout,      {.v = &layouts[0]} },
 	{ MODKEY,                       XK_f,      setlayout,      {.v = &layouts[1]} },
@@ -92,30 +123,16 @@ static Key keys[] = {
 	{ MODKEY,                       XK_space,  setlayout,      {0} },
 
 	{ MODKEY|ShiftMask,             XK_space,  togglefloating, {0} },
+
 	{ MODKEY,                       XK_0,      view,           {.ui = ~0 } },
+
 	{ MODKEY|ShiftMask,             XK_0,      tag,            {.ui = ~0 } },
+
 	{ MODKEY,                       XK_comma,  focusmon,       {.i = -1 } },
 	{ MODKEY,                       XK_period, focusmon,       {.i = +1 } },
+
 	{ MODKEY|ShiftMask,             XK_comma,  tagmon,         {.i = -1 } },
 	{ MODKEY|ShiftMask,             XK_period, tagmon,         {.i = +1 } },
-
-
-	{ MODKEY,                       XK_d,      spawn,          {.v = dmenucmd } },
-    { MODKEY|ShiftMask,             XK_d,	   spawn,		   SHCMD("Discord") },
-    { MODKEY|ControlMask|ShiftMask, XK_d,	   spawn,		   SHCMD("st -e cordless") },
-
-    { MODKEY|ShiftMask,             XK_m,	   spawn,		   SHCMD("st -e youtube-viewer -n --invidious") },
-	{ MODKEY|ShiftMask,             XK_v,      spawn,          SHCMD("st -e cli-visualizer") },
-
-    { MODKEY,                       XK_r,	   spawn,	       SHCMD("st -e ranger") },
-    { MODKEY|ShiftMask,             XK_r,	   spawn,		   SHCMD("st -e htop") },
-
-    { MODKEY,			            XK_w,	   spawn,		   SHCMD("$BROWSER") },
-
-    { MODKEY|ShiftMask,             XK_x,	   spawn,		   SHCMD("st -e slock") },
-	{ MODKEY|ControlMask|ShiftMask, XK_x,      spawn,          SHCMD("st -e sudo shutdown -P now") },
-
-
 
 	TAGKEYS(                        XK_1,                      0)
 	TAGKEYS(                        XK_2,                      1)
@@ -127,14 +144,7 @@ static Key keys[] = {
 	TAGKEYS(                        XK_8,                      7)
 	TAGKEYS(                        XK_9,                      8)
 
-
-    { 0,				        XK_Print,	 spawn,		       SHCMD("maim ~/Pictures/Screenshots/pic-full-$(date '+%y%m%d-%H%M-%S').png") },
-    { ShiftMask,				XK_Print,	 spawn,		       SHCMD("maim ~/Pictures/Screenshots/pic-full-$(date '+%y%m%d-%H%M-%S').png") },
-    { 0,                   XF86XK_AudioMute, spawn,	           SHCMD("pamixer -t") },
-	{ 0,            XF86XK_AudioRaiseVolume, spawn,		       SHCMD("pamixer --allow-boost -i 2") },
-	{ 0,            XF86XK_AudioLowerVolume, spawn,		       SHCMD("pamixer --allow-boost -d 2") },
-
-
+	{ MODKEY|ShiftMask,             XK_q,      quit,           {0} },
 };
 
 /* button definitions */
