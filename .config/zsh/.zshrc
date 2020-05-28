@@ -44,7 +44,7 @@ alias vst='nvim ~/.config/st/config.h'
 alias vvis='nvim ~/.config/vis/config'
 
 alias vzrc='nvim ~/.config/zsh/.zshrc'
-alias vrc='nvim ~/.vimrc'
+alias vrc='nvim ~/.config/nvim/init.vim'
 
 alias mkdir='mkdir -p'
 alias mkd='mkdir -p'
