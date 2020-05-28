@@ -162,7 +162,7 @@ static Key keys[] = {
     { MODKEY|ShiftMask,             XK_d,	   spawn,		   SHCMD("Discord") },
 
     { MODKEY|ShiftMask,             XK_m,	   spawn,		   SHCMD("st -e youtube-viewer -n --invidious") },
-	{ MODKEY|ShiftMask,             XK_v,      spawn,          SHCMD("st -e vis") },
+	{ MODKEY|ShiftMask,             XK_v,      spawn,          SHCMD("st -e cli-visualizer") },
 
     { MODKEY,                       XK_r,	   spawn,	       SHCMD("st -e ranger") },
     { MODKEY|ShiftMask,             XK_r,	   spawn,		   SHCMD("st -e htop") },

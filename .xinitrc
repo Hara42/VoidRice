@@ -1,4 +1,4 @@
-[[ -f ~/.Xresources ]] && xrdb -merge ~/.Xresources
+[[ -f ~/.config/xresources ]] && xrdb -merge ~/.config/xresources
 [ -f ~/.xprofile ] && . ~/.xprofile
 
  Statusbar loop
