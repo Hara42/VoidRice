@@ -1,4 +1,4 @@
 xcompmgr &
 dunst &
 unclutter &
-xwallpaper --center ~/.config/pape.jpg
+xwallpaper --center ~/.config/pape.png
