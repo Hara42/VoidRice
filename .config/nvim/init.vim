@@ -1,101 +1,50 @@
-set nocompatible
-
-" Syntax highlighting for many programming languages.
-filetype plugin on
-filetype indent on
-syntax on
-
-:set mouse=a
-
-"call plug#begin('~/.vim/plugged')
-"Plug 'itchyny/lightline.vim'
-"Plug 'scrooloose/nerdtree'
-"Plug 'junegunn/goyo.vim'
-"call plug#end()
-
-map <leader>n :NERDTreeToggle<CR>
-map <leader>g :Goyo<CR>
-
-" Colorscheme
-"colorscheme gruvbox
-set background=dark
-
-" Make vim transparent
-hi Normal guibg=NONE ctermbg=NONE
-
-" Add a line below the current line
-set cursorline
-
-" No Beeping
-set visualbell
-
-" Statusbar
-set laststatus=2
-
 let mapleader=" "
-" Reload this file
-nnoremap <leader>, :source ~/.vimrc<CR>
 
-"Spellcheck English and Spanish
-set spelllang=en_us
+" Use the system clipboard
+set clipboard+=unnamedplus
 
-" *****INDENTION*****
-set tabstop=4
-set shiftwidth=4
-set softtabstop=4
-set expandtab
-set autoindent
+" Vertically center document when entering insert mode
+autocmd InsertEnter * norm zz
 
-" Remove trailing whitespace
-nnoremap <leader>W :%s/\s\+$//<cr>:let @/=''<CR>
+" Remove trailing whitesplce and newlines on save
+autocmd BufWritePre * %s/\s\+$//e
+autocmd BufWritepre * %s/\n\+\%$//e
 
-" Split vertically
-nnoremap <leader>v <C-w>v<C-w>l
+" Enable spell checking
+map <leader>s :setlocal spell! spelllang=en_us<CR>
 
-" Navigating between screens nonretardlly
-nnoremap <C-h> <C-w>h
-nnoremap <C-j> <C-w>j
-nnoremap <C-k> <C-w>k
-nnoremap <C-l> <C-w>l
+" Shortcutting split navigation
+map <C-h> <C-w>h
+map <C-j> <C-w>j
+map <C-k> <C-w>k
+map <C-l> <C-w>l
 
-" Show hybrid of absolute and relative line numbers
+" Shortcut split opening
+nnoremap <leader>h :split<Space>
+nnoremap <leader>v :vsplit<Space>
+
+" Alias replace all to S
+nnoremap S :s%s//gI<left><Left><Left>
+
+" Basic settings
+set mouse=a
+set go=a
+filetype plugin on
+syntax on
+set ignorecase
+set smartcase
 set number relativenumber
 
-" Display Options
-set showmode
-set showcmd
+" Tab settings
+set expandtab
+set shiftwidth=4
+set softtabstop=4
+set tabstop=4
 
-" ******LINE WRAPPING *****
-" Wrap text that is longer than the window
-set wrap
-" Wrap at the end of a string
-set linebreak
-" Respect indention (e.g. Python)
-set breakindent
+set cursorline
+set cursorcolumn
 
-" Highlight matching pairs of brackets. Use '%' to jump between the characters
-set matchpairs+=<:>
+" Autocompletion
+set wildmode=longest,list,full
 
-" Speed up scrolling in Vim
-set ttyfast
-
-" Fixes common backspace problems
-set backspace=indent,eol,start
-
-" ***** SEARCH *****
-" Hight-light search matches and enable incremental search
-set hlsearch
-set incsearch
-" Include matching uppercase words with lowercase search term
-set ignorecase
-"Include only uppercase words with uppercase search term
-set smartcase
-" Cancel the search by using 'Esc' key
-nnoremap <silent> <leader>/ :nohlsearch<CR>
-autocmd FileType * inoremap `a á
-autocmd FileType * inoremap `e é
-autocmd FileType * inoremap `i í
-autocmd FileType * inoremap `o ó
-autocmd FileType * inoremap `u ú
-autocmd FileType * inoremap `u ü
-autocmd FileType * inoremap `n ñ
+set splitbelow splitright
