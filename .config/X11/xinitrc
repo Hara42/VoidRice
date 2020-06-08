@@ -1,12 +1,6 @@
 [[ -f ~/.config/xresources ]] && xrdb -merge ~/.config/xresources
 [ -f ~/.xprofile ] && . ~/.xprofile
 
-# Statusbar loop
-while true; do
-   xsetroot -name "$(date +"%b, %d %R" )"
-   sleep 1m    # Update time every minute
-done &
-
 # Autostart section
 start-pulseaudio-x11 &
 exec dwm

@@ -31,6 +31,7 @@ set mouse=a
 set go=a
 filetype plugin on
 syntax on
+set encoding=utf-8
 set ignorecase
 set smartcase
 set number relativenumber

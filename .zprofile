@@ -2,14 +2,13 @@
 # zsh profile file. Runs on login. Environmental variables are set here.
 
 # Adds `~/.local/bin` to $PATH
-export PATH="$PATH:$(du "$HOME/.local/bin/" | cut -f2 | tr '\n' ':' | sed 's/:*$//')"
+export PATH="$PATH:$(du "$HOME/.local/bin/" | cut -f2 | paste -sd ':')"
 
 export TERMINAL="st"
 export EDITOR="nvim"
 export BROWSER="firefox"
 export READER="mupdf"
 export FILE="ranger"
-
 
 # ~/ Clean-up:
 export XDG_CONFIG_HOME="$HOME/.config"

@@ -16,7 +16,7 @@ static const int smartgaps          = 0;        /* 1 means no outer gap when the
 static const int showbar            = 1;        /* 0 means no bar */
 static const int topbar             = 1;        /* 0 means bottom bar */
 
-static const char *fonts[]          = { "monospace:size=18" };
+static const char *fonts[]          = { "monospace:size=18", "JoyPixels:pixelsize=18:antialias=true:autohint=true" };
 static const char dmenufont[]       = "monospace:size=18";
 
 static const char col_gray1[]       = "#222222";
@@ -59,7 +59,7 @@ static const Layout layouts[] = {
 	/* symbol     arrange function */
 	{ "[]=",      tile },    /* first entry is default */
 	{ "><>",      NULL },    /* no layout function means floating behavior */
-    { "[M]",      monocle },   
+    { "[M]",      monocle },
     { "(@)",      spiral },
 	{ "[\\]",     dwindle },
 };
@@ -83,11 +83,11 @@ static const char *termcmd[]  = { "st", NULL };
 #include <X11/XF86keysym.h>
 static Key keys[] = {
 	/* modifier                     key        function        argument */
-	
+
     { MODKEY,                       XK_Return, spawn,          {.v = termcmd } },
 
 	{ MODKEY,                       XK_b,      togglebar,      {0} },
-    
+
     TAGKEYS(                        XK_1,                      0)
 	TAGKEYS(                        XK_2,                      1)
 	TAGKEYS(                        XK_3,                      2)
@@ -165,7 +165,7 @@ static Key keys[] = {
 	{ MODKEY|ShiftMask,             XK_v,      spawn,          SHCMD("st -e cli-visualizer") },
 
     { MODKEY,                       XK_r,	   spawn,	       SHCMD("st -e ranger") },
-    { MODKEY|ShiftMask,             XK_r,	   spawn,		   SHCMD("st -e htop") },
+    { MODKEY|ShiftMask,             XK_r,	   spawn,		   SHCMD("st -e gotop") },
 
     { MODKEY,			            XK_w,	   spawn,		   SHCMD("$BROWSER") },
 
@@ -174,8 +174,8 @@ static Key keys[] = {
 
     { 0,				        XK_Print,	 spawn,		       SHCMD("maim ~/Pictures/Screenshots/pic-full-$(date '+%y%m%d-%H%M-%S').png") },
     { 0,                   XF86XK_AudioMute, spawn,	           SHCMD("pamixer -t") },
-	{ 0,            XF86XK_AudioRaiseVolume, spawn,		       SHCMD("pamixer --allow-boost -i 2") },
-	{ 0,            XF86XK_AudioLowerVolume, spawn,		       SHCMD("pamixer --allow-boost -d 2") },
+	{ 0,            XF86XK_AudioRaiseVolume, spawn,		       SHCMD("pamixer --allow-boost -i 2 ; pkill -RTMIN+10 dwmblocks") },
+	{ 0,            XF86XK_AudioLowerVolume, spawn,		       SHCMD("pamixer --allow-boost -d 2 ; pkill -RTMIN+10 dwmblocks") },
 
 };
 
@@ -195,4 +195,3 @@ static Button buttons[] = {
 	{ ClkTagBar,            MODKEY,         Button1,        tag,            {0} },
 	{ ClkTagBar,            MODKEY,         Button3,        toggletag,      {0} },
 };
-
