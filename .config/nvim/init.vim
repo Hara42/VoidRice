@@ -49,3 +49,12 @@ set cursorcolumn
 set wildmode=longest,list,full
 
 set splitbelow splitright
+
+" Beaner glyphs
+autocmd FileType * inoremap `a á
+autocmd FileType * inoremap `e é
+autocmd FileType * inoremap `i í
+autocmd FileType * inoremap `o ó
+autocmd FileType * inoremap `u ú
+autocmd FileType * inoremap ``u ü
+autocmd FileType * inoremap `n ñ
